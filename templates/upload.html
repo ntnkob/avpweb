@@ -1,0 +1,10 @@
+{% from 'bootstrap5/form.html' import render_form %}
+{% extends "base.html" %}
+{% block page_title %}Upload{% endblock %}
+{% block content %}
+
+<p>This is upload page</p>
+{{ render_form(form) }}
+
+
+{% endblock %}

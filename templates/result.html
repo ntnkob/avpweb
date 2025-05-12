@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% block page_title %}AVP result{% endblock %}
+{% block styles %}
+    {{ super() }}
+    <style>
+    .addMore{
+        border: none;
+        background-color: #eee;
+        transition: all ease-in-out 0.2s;
+        cursor: pointer;
+    }
+    .addMore:hover{
+        border: 1px solid #888;
+        background-color: #ddd;
+    }
+    </style>
+{% endblock %}
+{% block content %}
+
+<div style="border-radius: 20px; padding: 10px; margin-top: 20px;">
+    <div class='row justify-content-center'>
+        <div class='col'>
+            <h3>AVP prediction result</h3>
+            <p style="margin-top: 1rem;">You can filter the FASTA header based on prediction results using the search bar
+        </div>
+    </div>
+    <div class='container-fluid table-responsive'>
+        <table id='data_table' class="table table-striped">
+            <thead>
+                <tr>
+                    {% for header_name in header_list %}
+                    <th id="header_{{ header_name }}">{{ header_name }} <i class="addMore bi-info-circle-fill"  id="info_{{ header_name }}" style="display: none" title="{{ explanation[header_name] }}"></i></th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for line in data %}
+                <tr>
+                    {% for element in line %}
+                    <td>{{ element }}</td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table> 
+        <br>
+        <a class="btn btn-primary" href="{{ url_for('download_avp_result_func') }}" role="button">   
+            Download file
+        </a>
+        <a class="btn btn-primary" href="{{ url_for('upload_func') }}" role="button">   
+            Back to home
+        </a> 
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+    <script>
+        $(document).ready(function() {
+            
+
+            $('#data_table').DataTable({
+            info: false,
+            paging: false,
+            scrollCollapse: true,
+            scrollY: '300px',
+            language: {
+                "search": "Search sequence ID:"
+            },
+            columnDefs: [
+                    { targets: 0, searchable: true },
+                    { targets: '_all', searchable: false }
+                ],
+            });
+            
+            {% for key in explanation %}
+                $("#info_{{ key }}").css("display", "");
+            {% endfor %}
+            
+        });
+    </script>
+{% endblock %}
