@@ -1,0 +1,24 @@
+{
+  "version": "1.2",
+  "dbname": "ANTICOV_BLASTDB",
+  "dbtype": "Protein",
+  "db-version": 5,
+  "description": "ANTICOV_BLASTDB",
+  "number-of-letters": 65583,
+  "number-of-sequences": 2681,
+  "last-updated": "2024-05-15T12:14:00",
+  "number-of-volumes": 1,
+  "bytes-total": 591137,
+  "bytes-to-cache": 89817,
+  "files": [
+    "ANTICOV_BLASTDB.pdb",
+    "ANTICOV_BLASTDB.phr",
+    "ANTICOV_BLASTDB.pin",
+    "ANTICOV_BLASTDB.pog",
+    "ANTICOV_BLASTDB.pos",
+    "ANTICOV_BLASTDB.pot",
+    "ANTICOV_BLASTDB.psq",
+    "ANTICOV_BLASTDB.ptf",
+    "ANTICOV_BLASTDB.pto"
+  ]
+}
