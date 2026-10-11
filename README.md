@@ -1,3 +1,6 @@
+# Requirements
+This package is for Linux or Conda installation only
+
 # Installation
 1. Download the repository 
 2. Using Python 3.9.25, install dependencies from ```requirements.txt```
