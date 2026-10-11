@@ -12,8 +12,8 @@ def get_blast_result(inpname = 'uploaded.fasta', database = "AVP_BLASTDB", outna
     blast_df['original_index'] = blast_df['sseqid'].apply(lambda x: int(x.split('_')[0][3:]))
     original_data = pd.read_csv('assets/avp_data_v2.csv').reset_index()
     avp_merged_df = pd.merge(blast_df, original_data, left_on = 'original_index', right_on = 'index')
-    reformat_result(avp_merged_df, rename_dict = {'qseqid':'Query sequence ID', 'sseqid': 'Matched sequence ID', 'pident': 'Percent identity', 'Class': 'Class', 'Source': 'Data source'}).to_csv(f'output/avp_blast_output.csv', index=False)
+    reformat_result(avp_merged_df, rename_dict = {'qseqid':'Query sequence ID', 'sseqid': 'Most similar peptide', 'Class': 'Class', 'Source': 'Data source', 'pident': 'Percent identity'}).to_csv(f'output/avp_blast_output.csv', index=False)
 
     anticov_result_df = pd.read_csv('output/anticov_result.csv')
     anticov_merged_df = avp_merged_df[avp_merged_df['qseqid'].isin(anticov_result_df['Sequence ID'])]
-    reformat_result(anticov_merged_df, rename_dict = {'qseqid':'Query sequence ID', 'sseqid': 'Matched sequence ID', 'pident': 'Percent identity', 'Class': 'Class', 'Source': 'Data source'}).to_csv(f'output/anticov_blast_output.csv', index=False)
+    reformat_result(anticov_merged_df, rename_dict = {'qseqid':'Query sequence ID', 'sseqid': 'Most similar peptide', 'Class': 'Class', 'Source': 'Data source', 'pident': 'Percent identity'}).to_csv(f'output/anticov_blast_output.csv', index=False)

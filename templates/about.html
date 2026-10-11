@@ -2,6 +2,32 @@
 {% block page_title %}About{% endblock %}
 {% block content %}
 
-<p>This is about page</p>
+<h1>About AVIS</h1>
+<h2>AntiViral Peptide Identification System</h2>
+<p>AVIS is an integrated computational platform designed to facilitate the identification and characterization of potential antiviral peptides (AVPs) and anti-coronavirus peptides (ACoVPs). By combining machine learning-based prediction with sequence and structural similarity analyses, AVIS provides researchers with complementary information to support the screening and prioritization of candidate peptides for further investigation.</p>
+
+<b>Key Features</b>
+<ol>
+<li>Antiviral Peptide Prediction</li>
+AVIS employs a Light Gradient Boosting Machine (LightGBM) model to predict whether an input peptide has potential antiviral activity. The model was developed using curated peptide sequences collected from multiple publicly available databases.
+<li>Anti-Coronavirus Peptide Prediction</li>
+For peptides predicted as AVPs, AVIS provides an additional prediction of potential anti-coronavirus activity using a logistic regression model trained to distinguish ACoVPs from general AVPs.
+<li>Sequence Similarity Analysis</li>
+Predicted AVPs and ACoVPs are compared with known antiviral peptides in the curated database. Sequence similarity scores are provided to help users identify previously reported peptides with similar sequences.
+<li>Structural Similarity Analysis</li>
+AVIS evaluates structural similarity between input peptides and known antiviral peptides using TM-score. This analysis provides additional information about structural resemblance that may not be apparent from sequence comparisons alone.
+</ol>
+
+<h4>Intended Applications</h4>
+AVIS is designed to support researchers working in antiviral drug discovery, peptide engineering, bioinformatics, and computational biology. The platform can assist in the preliminary screening of peptide sequences, exploration of their similarity to known antiviral peptides, and prioritization of candidates for subsequent experimental studies.
+<br>
+
+<h4>Important Considerations</h4>
+AVIS provides computational predictions rather than experimental confirmation of antiviral activity. Prediction scores and similarity measurements should be interpreted as complementary information and do not establish antiviral efficacy, safety, or mechanism of action. Experimental validation remains necessary before drawing conclusions regarding the biological activity of predicted peptides.
+<br>
+
+<h4>Development and Research</h4>
+AVIS was developed as part of a research initiative focused on applying machine learning and computational approaches to antiviral peptide identification and characterization.
+<br>
 
 {% endblock %}

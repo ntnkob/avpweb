@@ -21,11 +21,11 @@ def structure_process(all_fasta):
     original_data = pd.read_csv('assets/avp_data_v2.csv').reset_index()
 
     avp_merged_df = pd.merge(structure_df, original_data, left_on = 'original_index', right_on = 'index')
-    reformat_result(avp_merged_df, rename_dict = {'query':'Query sequence ID', 'target': 'Matched sequence ID', 'fident': 'Percent identity', 'Class': 'Class', 'Source': 'Data source'}).to_csv(f'output/avp_structure_result.csv', index=False)
+    reformat_result(avp_merged_df, rename_dict = {'query':'Query sequence ID', 'target': 'Most similar peptide', 'fident': 'Percent identity', 'Class': 'Class', 'Source': 'Data source'}).to_csv(f'output/avp_structure_result.csv', index=False)
 
     anticov_result_df = pd.read_csv('output/anticov_result.csv')
     anticov_merged_df = avp_merged_df[avp_merged_df['query'].isin(anticov_result_df['Sequence ID'])]
-    reformat_result(avp_merged_df, rename_dict = {'query':'Query sequence ID', 'target': 'Matched sequence ID', 'fident': 'Percent identity', 'Subclass': 'Class', 'Source': 'Data source'}).to_csv(f'output/anticov_structure_result.csv', index=False)
+    reformat_result(avp_merged_df, rename_dict = {'query':'Query sequence ID', 'target': 'Most similar peptide', 'fident': 'Percent identity', 'Subclass': 'Class', 'Source': 'Data source'}).to_csv(f'output/anticov_structure_result.csv', index=False)
 
 
 def get_PDB_structure(sequence = 'IFKAIWSGIK'):

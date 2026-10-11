@@ -25,8 +25,8 @@ class UploadForm(FlaskForm):
     fasta_string = TextAreaField("Input sequence", render_kw = {"placeholder": "Paste your FASTA sequence here"}, validators=[validators.optional()])
     fasta_file = FileField("Or upload FASTA file", validators=[validators.optional()])
     email_return = StringField("(Optional) E-mail to return results", validators=[validators.email(), validators.optional()])
-    avp_threshold = IntegerField("AVP Threshold in percent (0-100)", default = 50, validators=[validators.input_required(), validators.NumberRange(min=0, max=100, message='Validators must be within 0-100')])
-    anticov_threshold = IntegerField("Anti-CoV Threshold in percent (0-100)", default = 50, validators=[validators.input_required(), validators.NumberRange(min=0, max=100, message='Validators must be within 0-100')])
+    avp_threshold = IntegerField("AVP prediction threshold", default = 50, validators=[validators.input_required(), validators.NumberRange(min=0, max=100, message='Validators must be within 0-100')])
+    anticov_threshold = IntegerField("ACoVP prediction threshold", default = 50, validators=[validators.input_required(), validators.NumberRange(min=0, max=100, message='Validators must be within 0-100')])
     submit_button = SubmitField()
 
     def validate(self):
@@ -52,8 +52,8 @@ def process(option_dict: dict = None) -> None :
     # Run structure sim model #TODO: Move into struct_sim.py
     structure_process(all_fasta)
 
-def generate_html_features(result_path: str) -> None:
-    data = pd.read_csv(result_path).iloc[:, :10]
+def generate_html_features(result_path: str, col_count: int) -> None:
+    data = pd.read_csv(result_path).loc[:, :col_count]
     data_columns = data.columns    
     data_values = data.values.tolist()
     return data_columns, data_values
@@ -80,39 +80,63 @@ def about_func():
 
 @app.route('/avp_result')
 def avp_result_func():
-    data_columns, data_values = generate_html_features('output/avp_result.csv')
+    data_columns, data_values = generate_html_features('output/avp_result.csv', col_count = 3)
     # A dictionary of feature explanation {feature_name: feature_explanation}
     feature_explanation = {'Probability': 'Probability of being an AVP'}
-    return render_template('result.html', header_list = data_columns, data = data_values, explanation = feature_explanation)
+    return render_template('result.html', 
+                           page_header = "AVP: Machine learning prediction result",
+                           header_list = data_columns, 
+                           data = data_values, 
+                           explanation = feature_explanation)
 
 @app.route('/anticov_result')
 def anticov_result_func():
-    data_columns, data_values = generate_html_features('output/anticov_result.csv')
-    return render_template('result.html', header_list = data_columns, data = data_values, explanation = {})
+    data_columns, data_values = generate_html_features('output/anticov_result.csv', col_count = 3)
+    return render_template('result.html', 
+                           page_header = "ACoVP: Machine learning prediction result",
+                           header_list = data_columns, 
+                           data = data_values, 
+                           explanation = {})
 
 @app.route('/avp_blast_result')
 def avp_blast_result_func():
-    data_columns, data_values = generate_html_features('output/avp_blast_output.csv')
+    data_columns, data_values = generate_html_features('output/avp_blast_output.csv', col_count = 5)
     feature_explanation = {'Class': 'Peptide class according to the best matched sequence from our database (AVP/Non-AVP)'}
-    return render_template('result.html', header_list = data_columns, data = data_values, explanation = feature_explanation)
+    return render_template('result.html', 
+                           page_header = "AVP: Sequence similarity result",
+                           header_list = data_columns, 
+                           data = data_values, 
+                           explanation = feature_explanation)
 
 @app.route('/anticov_blast_result')
 def anticov_blast_result_func():
-    data_columns, data_values = generate_html_features('output/anticov_blast_output.csv')
+    data_columns, data_values = generate_html_features('output/anticov_blast_output.csv', col_count = 5)
     feature_explanation = {'Class': 'Peptide class according to the best matched sequence from our database (Anti-CoV/AVP)'}
-    return render_template('result.html', header_list = data_columns, data = data_values, explanation = feature_explanation)
+    return render_template('result.html', 
+                           page_header = "ACoVP: Sequence similarity result",
+                           header_list = data_columns, 
+                           data = data_values, 
+                           explanation = feature_explanation)
 
 @app.route('/avp_structure_result')
 def avp_structure_result_func():
-    data_columns, data_values = generate_html_features('output/avp_structure_result.csv')
+    data_columns, data_values = generate_html_features('output/avp_structure_result.csv', col_count = 5)
     feature_explanation = {'Class': 'Peptide class according to the best matched sequence from our database (Anti-CoV/AVP)'}
-    return render_template('result.html', header_list = data_columns, data = data_values, explanation = feature_explanation)
+    return render_template('result.html',
+                           page_header = "AVP: Structure similarity result",
+                           header_list = data_columns, 
+                           data = data_values, 
+                           explanation = feature_explanation)
 
 @app.route('/anticov_structure_result')
 def anticov_structure_result_func():
-    data_columns, data_values = generate_html_features('output/anticov_structure_result.csv')
+    data_columns, data_values = generate_html_features('output/anticov_structure_result.csv', col_count = 5)
     feature_explanation = {'Class': 'Peptide class according to the best matched sequence from our database (Anti-CoV/AVP)'}
-    return render_template('result.html', header_list = data_columns, data = data_values, explanation = feature_explanation)
+    return render_template('result.html',
+                           page_header = "ACoVP: Structure similarity result",
+                           header_list = data_columns, 
+                           data = data_values, 
+                           explanation = feature_explanation)
 
 @app.route('/download_avp_result')
 def download_avp_result_func():

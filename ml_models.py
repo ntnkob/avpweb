@@ -63,7 +63,7 @@ def get_prediction(all_fasta: dict, avp_threshold: float = 0.5, anticov_threshol
     AVP_result = predict_model(AVP_model, data = feature_df, probability_threshold=avp_threshold)
     importance_sorted_arg = AVP_model._final_estimator.feature_importances_.argsort()
     AVP_result = AVP_result.iloc[:, list(importance_sorted_arg) + [748, 749]]
-    AVP_reformat = reformat_result(AVP_result, rename_dict = {'SeqID':'Sequence ID', 'prediction_label': 'Class', 'prediction_score':'Probability'})
+    AVP_reformat = reformat_result(AVP_result, rename_dict = {'SeqID':'Query sequence ID', 'prediction_label': 'Class', 'prediction_score':'Probability'})
     AVP_reformat.to_csv('output/avp_result.csv', index=False)
 
     # Step 2: Filter only AVPs
@@ -72,5 +72,5 @@ def get_prediction(all_fasta: dict, avp_threshold: float = 0.5, anticov_threshol
     AntiCoV_result = predict_model(AntiCoV_model, data = AVP_df, probability_threshold=anticov_threshold)
     importance_sorted_arg = AntiCoV_model._final_estimator.feature_importances_.argsort()
     AntiCoV_result = AntiCoV_result.iloc[:, list(importance_sorted_arg) + [748, 749]]
-    AntiCoV_reformat = reformat_result(AntiCoV_result, rename_dict = {'SeqID':'Sequence ID', 'prediction_label': 'Class', 'prediction_score':'Probability'})
+    AntiCoV_reformat = reformat_result(AntiCoV_result, rename_dict = {'SeqID':'Query sequence ID', 'prediction_label': 'Class', 'prediction_score':'Probability'})
     AntiCoV_reformat.to_csv('output/anticov_result.csv', index=False)
