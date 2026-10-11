@@ -15,5 +15,5 @@ def get_blast_result(inpname = 'uploaded.fasta', database = "AVP_BLASTDB", outna
     reformat_result(avp_merged_df, rename_dict = {'qseqid':'Query sequence ID', 'sseqid': 'Most similar peptide', 'Class': 'Class', 'Source': 'Data source', 'pident': 'Percent identity'}).to_csv(f'output/avp_blast_output.csv', index=False)
 
     anticov_result_df = pd.read_csv('output/anticov_result.csv')
-    anticov_merged_df = avp_merged_df[avp_merged_df['qseqid'].isin(anticov_result_df['Sequence ID'])]
+    anticov_merged_df = avp_merged_df[avp_merged_df['qseqid'].isin(anticov_result_df['Query sequence ID'])]
     reformat_result(anticov_merged_df, rename_dict = {'qseqid':'Query sequence ID', 'sseqid': 'Most similar peptide', 'Class': 'Class', 'Source': 'Data source', 'pident': 'Percent identity'}).to_csv(f'output/anticov_blast_output.csv', index=False)

@@ -1,3 +1,1 @@
-Query sequence ID,Matched sequence ID,Percent identity,Class,Data source,SeqID,alnlen,mismatch,gapopen,qstart,qend,tstart,tend,evalue,bits,original_index,index,Subclass,Sequence,Sequence (upper),Length,Metadata,Metadata Rank,Source count
-Seq2_DRAVP_AVP,Seq6600_APD3_Non-AVP,0.382,Non-AVP,APD3,0,34,20,0,3,35,5,38,0.02494,56,6600,6600,Non-AVP,GFGCPNNYACHQHCKSIRGYCGGYCAGWFRLRCTCYRCG,GFGCPNNYACHQHCKSIRGYCGGYCAGWFRLRCTCYRCG,39,True,5,3
-Seq1_DRAVP_AVP,Seq6459_DRAVP_AVP,1.0,AVP,DRAVP,1,38,0,0,1,38,1,38,1.954e-08,283,6459,6459,AVP,GFGCPFNQGKCHRHCRSIRRRGGYCDGFLKQRCVCYRK,GFGCPFNQGKCHRHCRSIRRRGGYCDGFLKQRCVCYRK,38,True,1,1
+Query sequence ID,Most similar peptide,Percent identity,Class,Data source,SeqID,alnlen,mismatch,gapopen,qstart,qend,tstart,tend,evalue,bits,original_index,index,Subclass,Sequence,Sequence (upper),Length,Metadata,Metadata Rank,Source count

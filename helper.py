@@ -10,5 +10,5 @@ def reformat_result(input_df: pd.DataFrame, rename_dict: dict = {}) -> pd.DataFr
         column_list.insert(location, column_list.pop(column_list.index(original_name)))
     final_result = final_result.loc[:, column_list]
     final_result = final_result.rename(columns = rename_dict)
-    final_result['Class'] = final_result.replace({0: "Non-AVP", 1: "AVP"})
+    final_result['Class'] = final_result['Class'].replace({0: "Non-AVP", 1: "AVP"})
     return final_result

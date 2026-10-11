@@ -44,8 +44,8 @@
             </tbody>
         </table> 
         <br>
-        <a class="btn btn-primary" href="{{ url_for('download_avp_result_func') }}" role="button">   
-            Download file
+        <a class="btn btn-primary" href="{{ url_for('download_result_func', requested_file = download_route) }}" role="button">   
+            {{ download_button_name }}
         </a>
         <a class="btn btn-primary" href="{{ url_for('upload_func') }}" role="button">   
             Back to home

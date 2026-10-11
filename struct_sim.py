@@ -3,11 +3,17 @@ import certifi
 import subprocess
 from io import BytesIO
 import pandas as pd
+import os
+import glob
 from helper import reformat_result
 
 buffer = BytesIO()
 
 def structure_process(all_fasta):
+    # Clear existing predictedPDB folder first
+    files = glob.glob('output/predictedPDB/*')
+    for to_be_deleted in files:
+        os.remove(to_be_deleted)
     for seq_id, sequence in zip(all_fasta['id'], all_fasta['seq']):
         with open(f'output/predictedPDB/{seq_id}.pdb', 'w') as writehandle:
             writehandle.write(get_PDB_structure(sequence))
@@ -24,7 +30,7 @@ def structure_process(all_fasta):
     reformat_result(avp_merged_df, rename_dict = {'query':'Query sequence ID', 'target': 'Most similar peptide', 'fident': 'Percent identity', 'Class': 'Class', 'Source': 'Data source'}).to_csv(f'output/avp_structure_result.csv', index=False)
 
     anticov_result_df = pd.read_csv('output/anticov_result.csv')
-    anticov_merged_df = avp_merged_df[avp_merged_df['query'].isin(anticov_result_df['Sequence ID'])]
+    anticov_merged_df = avp_merged_df[avp_merged_df['query'].isin(anticov_result_df['Query sequence ID'])]
     reformat_result(avp_merged_df, rename_dict = {'query':'Query sequence ID', 'target': 'Most similar peptide', 'fident': 'Percent identity', 'Subclass': 'Class', 'Source': 'Data source'}).to_csv(f'output/anticov_structure_result.csv', index=False)
 
 

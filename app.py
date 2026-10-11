@@ -24,9 +24,13 @@ for initcode in foldseek_initcode:
 class UploadForm(FlaskForm):
     fasta_string = TextAreaField("Input sequence", render_kw = {"placeholder": "Paste your FASTA sequence here"}, validators=[validators.optional()])
     fasta_file = FileField("Or upload FASTA file", validators=[validators.optional()])
-    email_return = StringField("(Optional) E-mail to return results", validators=[validators.email(), validators.optional()])
-    avp_threshold = IntegerField("AVP prediction threshold", default = 50, validators=[validators.input_required(), validators.NumberRange(min=0, max=100, message='Validators must be within 0-100')])
-    anticov_threshold = IntegerField("ACoVP prediction threshold", default = 50, validators=[validators.input_required(), validators.NumberRange(min=0, max=100, message='Validators must be within 0-100')])
+    avp_threshold = IntegerField("AVP prediction threshold",
+                                    default = 50, 
+                                    validators=[validators.input_required(), validators.NumberRange(min=0, max=100, message='Validators must be within 0-100')])
+    anticov_threshold = IntegerField("ACoVP prediction threshold", 
+                                    description = "The threshold determines the probability cutoff for classifying peptides as AVPs or ACoVPs (default: 50).<br>Lower thresholds generally increase sensitivity but may produce more false positives, whereas higher thresholds reduce false positives but may increase false negatives.",
+                                    default = 50, 
+                                    validators=[validators.input_required(), validators.NumberRange(min=0, max=100, message='Validators must be within 0-100')])
     submit_button = SubmitField()
 
     def validate(self):
@@ -53,7 +57,7 @@ def process(option_dict: dict = None) -> None :
     structure_process(all_fasta)
 
 def generate_html_features(result_path: str, col_count: int) -> None:
-    data = pd.read_csv(result_path).loc[:, :col_count]
+    data = pd.read_csv(result_path).iloc[:, :col_count]
     data_columns = data.columns    
     data_values = data.values.tolist()
     return data_columns, data_values
@@ -67,8 +71,7 @@ def upload_func():
         if bool(form.fasta_string.data):
             with open('input/uploaded.fasta', 'w') as inputhandle:
                 inputhandle.write(form.fasta_string.data)
-        option_dict = {'email_return': form.email_return.data, #TODO: Fix if user does not specify email
-                       'avp_threshold': form.avp_threshold.data/100,
+        option_dict = {'avp_threshold': form.avp_threshold.data/100,
                        'anticov_threshold': form.anticov_threshold.data/100}
         process(option_dict)
         return redirect(url_for('avp_result_func'))
@@ -87,7 +90,9 @@ def avp_result_func():
                            page_header = "AVP: Machine learning prediction result",
                            header_list = data_columns, 
                            data = data_values, 
-                           explanation = feature_explanation)
+                           explanation = feature_explanation,
+                           download_route = 'avp_result.csv',
+                           download_button_name = 'Download AVP: Machine learning prediction result')
 
 @app.route('/anticov_result')
 def anticov_result_func():
@@ -96,7 +101,9 @@ def anticov_result_func():
                            page_header = "ACoVP: Machine learning prediction result",
                            header_list = data_columns, 
                            data = data_values, 
-                           explanation = {})
+                           explanation = {},
+                           download_route = 'anticov_result.csv',
+                           download_button_name = 'Download ACoVP: Machine learning prediction result')
 
 @app.route('/avp_blast_result')
 def avp_blast_result_func():
@@ -106,7 +113,9 @@ def avp_blast_result_func():
                            page_header = "AVP: Sequence similarity result",
                            header_list = data_columns, 
                            data = data_values, 
-                           explanation = feature_explanation)
+                           explanation = feature_explanation,
+                           download_route = 'avp_blast_output.csv',
+                           download_button_name = 'Download AVP: Sequence similarity result')
 
 @app.route('/anticov_blast_result')
 def anticov_blast_result_func():
@@ -116,7 +125,9 @@ def anticov_blast_result_func():
                            page_header = "ACoVP: Sequence similarity result",
                            header_list = data_columns, 
                            data = data_values, 
-                           explanation = feature_explanation)
+                           explanation = feature_explanation,
+                           download_route = 'anticov_blast_output.csv',
+                           download_button_name = 'Download ACoVP: Sequence similarity result')
 
 @app.route('/avp_structure_result')
 def avp_structure_result_func():
@@ -126,7 +137,9 @@ def avp_structure_result_func():
                            page_header = "AVP: Structure similarity result",
                            header_list = data_columns, 
                            data = data_values, 
-                           explanation = feature_explanation)
+                           explanation = feature_explanation,
+                           download_route = 'avp_structure_result.csv',
+                           download_button_name = 'Download AVP: Structure similarity result')
 
 @app.route('/anticov_structure_result')
 def anticov_structure_result_func():
@@ -136,15 +149,18 @@ def anticov_structure_result_func():
                            page_header = "ACoVP: Structure similarity result",
                            header_list = data_columns, 
                            data = data_values, 
-                           explanation = feature_explanation)
+                           explanation = feature_explanation,
+                           download_route = 'anticov_structure_result.csv',
+                           download_button_name = 'Download ACoVP: Structure similarity result')
+    
+@app.route('/download_result<requested_file>')
+def download_result_func(requested_file: str):
+    # For security
+    if requested_file not in ['avp_result.csv', 'avp_blast_output.csv', 'avp_structure_result.csv', 'anticov_result.csv', 'anticov_blast_output.csv', 'anticov_structure_result.csv']:
+        return redirect('/', code =301)
+    else:
+        return send_from_directory('output', requested_file, as_attachment=True) 
 
-@app.route('/download_avp_result')
-def download_avp_result_func():
-    return send_from_directory('output', 'avp_result.csv', as_attachment=True) 
-
-@app.route('/download_anticov_result')
-def download_anticov_result_func():
-    return send_from_directory('output', 'anticov_result.csv', as_attachment=True) 
 
 
     

@@ -59,7 +59,7 @@ def get_prediction(all_fasta: dict, avp_threshold: float = 0.5, anticov_threshol
     feature_df = generate_features(all_fasta['id'], all_fasta['seq'])
 
     # Step 1: AVP vs Non-AVP
-    AVP_model = load_model('assets/models/avp_model_v2')
+    AVP_model = load_model('assets/models/AVP_Balanced_pyFeature_1stET_0.89F1')
     AVP_result = predict_model(AVP_model, data = feature_df, probability_threshold=avp_threshold)
     importance_sorted_arg = AVP_model._final_estimator.feature_importances_.argsort()
     AVP_result = AVP_result.iloc[:, list(importance_sorted_arg) + [748, 749]]
@@ -68,7 +68,7 @@ def get_prediction(all_fasta: dict, avp_threshold: float = 0.5, anticov_threshol
 
     # Step 2: Filter only AVPs
     AVP_df = AVP_result[AVP_result['prediction_label']==1].drop(columns = ['prediction_label','prediction_score'])
-    AntiCoV_model = load_model('assets/models/anticov_model_v2')
+    AntiCoV_model = load_model('assets/models/CoVBalanced_pyFeatures_ET_0.858F1')
     AntiCoV_result = predict_model(AntiCoV_model, data = AVP_df, probability_threshold=anticov_threshold)
     importance_sorted_arg = AntiCoV_model._final_estimator.feature_importances_.argsort()
     AntiCoV_result = AntiCoV_result.iloc[:, list(importance_sorted_arg) + [748, 749]]
