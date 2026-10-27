@@ -21,7 +21,10 @@
     </head>
     <body>
         <!-- Your page content -->
-        <a class="navbar-brand" href="/"><img width="35" height="35" class="d-inline-block align-top" src="{{ url_for('static', filename='AVIS_logo.png') }}" alt="AVIS Logo" > AVIS: AntiViral peptide Identification System</a>
+        <a class="navbar-brand d-flex align-items-center" href="/">
+            <img width="70" height="70" class="d-inline-block align-text-top me-2" src="{{ url_for('static', filename='AVIS_logo.png') }}" alt="AVIS Logo" >
+            <span style="font-size: 24px;">AVIS: AntiViral peptide Identification System</span>
+        </a>
         <!-- Navigation bar; should be in every page -->
         <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #0D6EFD">
             <div class="container-fluid justify-content-start">
@@ -36,15 +39,15 @@
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">AVP prediction result</a>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="{{ url_for('avp_result_func') }}">ML result</a></li>
+                                <li><a class="dropdown-item" href="{{ url_for('avp_result_func') }}">Machine learning prediction result</a></li>
                                 <li><a class="dropdown-item" href="{{ url_for('avp_blast_result_func') }}">Sequence similarity result</a></li>
                                 <li><a class="dropdown-item" href="{{ url_for('avp_structure_result_func') }}">Structure similarity result</a></li>
                             </ul>
                         </li>
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Anti-CoV results</a>
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">ACoVP prediction results</a>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="{{ url_for('anticov_result_func') }}">ML result</a></li>
+                                <li><a class="dropdown-item" href="{{ url_for('anticov_result_func') }}">Machine learning prediction result</a></li>
                                 <li><a class="dropdown-item" href="{{ url_for('anticov_blast_result_func') }}">Sequence similarity result</a></li>
                                 <li><a class="dropdown-item" href="{{ url_for('anticov_structure_result_func') }}">Structure similarity result</a></li>
                             </ul>
